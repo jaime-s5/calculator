@@ -134,6 +134,23 @@ function mathOperatorClicked(event) {
   }
 }
 
+function equalClicked() {
+  // If rightOperand is empty, we duplicate the number
+  if (getPopulationTokens() === 2) tokens.rightOperand = tokens.leftOperand;
+
+  if (getPopulationTokens() === 3 || getPopulationTokens() === 2) {
+    const result = operate(
+      parseFloat(tokens.leftOperand),
+      tokens.operator,
+      parseFloat(tokens.rightOperand)
+    ).toString();
+    erase();
+    tokens.leftOperand = result;
+    populateDisplay(result);
+    equalWasClicked = true;
+  }
+}
+
 window.onload = function main() {
   // Default value on display
   populateDisplay('0');
@@ -147,5 +164,6 @@ window.onload = function main() {
     .forEach((element) =>
       element.addEventListener('click', mathOperatorClicked)
     );
+  document.querySelector('#equal').addEventListener('click', equalClicked);
   document.querySelector('#ac').addEventListener('click', eraseClicked);
 };
