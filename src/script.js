@@ -134,6 +134,25 @@ function decimalClicked() {
   populateDisplay(tokens[operand], 'input');
 }
 
+function delClicked() {
+  const operand = getOperand();
+
+  // Erases result if introducing new number after equal was clicked
+  if (equalWasClicked && operand === 'leftOperand') erase();
+  equalWasClicked = false;
+
+  // If operand is empty or matchs regex, assign 0 or delete until 0
+  if (
+    !tokens[operand] ||
+    tokens[operand].match(/^-?\d$/) ||
+    tokens[operand].match(/^-0\.$/)
+  )
+    tokens[operand] = '0';
+  else tokens[operand] = tokens[operand].slice(0, -1);
+
+  populateDisplay(tokens[operand], 'input');
+}
+
 function changeSign(operand) {
   return tokens[operand].charAt(0) === '-'
     ? tokens[operand].slice(1)
@@ -208,4 +227,5 @@ window.onload = function main() {
   document.querySelector('#ac').addEventListener('click', eraseClicked);
   document.querySelector('#sign').addEventListener('click', signClicked);
   document.querySelector('#decimal').addEventListener('click', decimalClicked);
+  document.querySelector('#del').addEventListener('click', delClicked);
 };
