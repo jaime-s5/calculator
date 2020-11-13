@@ -8,6 +8,9 @@ const tokens = {
 
 const DISPLAY_SIZE = 10;
 
+// This variable allows to track if equal was clicked before introducing a number
+let equalWasClicked = false;
+
 const math = {
   add: (x, y) => x + y,
   substract: (x, y) => x - y,
@@ -74,6 +77,20 @@ function populateDisplay(string, flag = 'result') {
   display.innerText = displayValue;
 }
 
+function getPopulationTokens() {
+  if (tokens.leftOperand && tokens.operator && tokens.rightOperand) return 3;
+  if (tokens.leftOperand && tokens.operator) return 2;
+  if (tokens.leftOperand) return 1;
+
+  return 0;
+}
+
+function getOperand() {
+  return getPopulationTokens() === 3 || getPopulationTokens() === 2
+    ? 'rightOperand'
+    : 'leftOperand';
+}
+
 function erase() {
   tokens.leftOperand = '0';
   tokens.operator = '';
@@ -83,4 +100,20 @@ function erase() {
 function eraseClicked() {
   erase();
   populateDisplay('0');
+}
+
+function numberClicked(event) {
+  const operand = getOperand();
+
+  // Erases result if introducing new number after equal was clicked
+  if (equalWasClicked && operand === 'leftOperand') erase();
+  equalWasClicked = false;
+
+  const result =
+    tokens[operand].charAt(0) === '0'
+      ? tokens[operand].slice(1)
+      : tokens[operand];
+
+  tokens[operand] = result + event.currentTarget.innerText;
+  populateDisplay(tokens[operand], 'input');
 }
