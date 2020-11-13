@@ -117,3 +117,15 @@ function numberClicked(event) {
   tokens[operand] = result + event.currentTarget.innerText;
   populateDisplay(tokens[operand], 'input');
 }
+
+window.onload = function main() {
+  // Default value on display
+  populateDisplay('0');
+
+  // Event listeners
+  document
+    .querySelectorAll('.number')
+    .forEach((element) => element.addEventListener('click', numberClicked));
+
+  document.querySelector('#ac').addEventListener('click', eraseClicked);
+};
