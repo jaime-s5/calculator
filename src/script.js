@@ -118,6 +118,22 @@ function numberClicked(event) {
   populateDisplay(tokens[operand], 'input');
 }
 
+function mathOperatorClicked(event) {
+  if (getPopulationTokens() === 3) {
+    const result = operate(
+      parseFloat(tokens.leftOperand),
+      tokens.operator,
+      parseFloat(tokens.rightOperand)
+    ).toString();
+    erase();
+    tokens.leftOperand = result;
+    tokens.operator = event.currentTarget.getAttribute('id');
+    populateDisplay(result);
+  } else if (getPopulationTokens() === 2 || getPopulationTokens() === 1) {
+    tokens.operator = event.currentTarget.getAttribute('id');
+  }
+}
+
 window.onload = function main() {
   // Default value on display
   populateDisplay('0');
@@ -126,6 +142,10 @@ window.onload = function main() {
   document
     .querySelectorAll('.number')
     .forEach((element) => element.addEventListener('click', numberClicked));
-
+  document
+    .querySelectorAll('.math-operator')
+    .forEach((element) =>
+      element.addEventListener('click', mathOperatorClicked)
+    );
   document.querySelector('#ac').addEventListener('click', eraseClicked);
 };
