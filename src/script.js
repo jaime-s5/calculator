@@ -1,3 +1,11 @@
+// Object representing the tokens of a combination (A + B)
+// Operands are strings to have more control over how numbers are handled
+const tokens = {
+  leftOperand: '0',
+  operator: '',
+  rightOperand: '',
+};
+
 const DISPLAY_SIZE = 10;
 
 const math = {
@@ -64,4 +72,15 @@ function populateDisplay(string, flag = 'result') {
   }
 
   display.innerText = displayValue;
+}
+
+function erase() {
+  tokens.leftOperand = '0';
+  tokens.operator = '';
+  tokens.rightOperand = '';
+}
+
+function eraseClicked() {
+  erase();
+  populateDisplay('0');
 }
