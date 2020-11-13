@@ -118,6 +118,30 @@ function numberClicked(event) {
   populateDisplay(tokens[operand], 'input');
 }
 
+function changeSign(operand) {
+  return tokens[operand].charAt(0) === '-'
+    ? tokens[operand].slice(1)
+    : '-'.concat(tokens[operand]);
+}
+
+function signClicked() {
+  const operandStore = getOperand();
+
+  const operandCopy =
+    getPopulationTokens() === 3 ? 'rightOperand' : 'leftOperand';
+
+  if (tokens[operandCopy] === '0') return;
+
+  tokens[operandStore] = changeSign(operandCopy);
+
+  // Format display accordingly if number inputed or result displayed
+  let flag = 'result';
+  if (equalWasClicked) flag = 'result';
+  else if (operandStore === operandCopy) flag = 'input';
+
+  populateDisplay(tokens[operandStore], flag);
+}
+
 function mathOperatorClicked(event) {
   if (getPopulationTokens() === 3) {
     const result = operate(
@@ -166,4 +190,5 @@ window.onload = function main() {
     );
   document.querySelector('#equal').addEventListener('click', equalClicked);
   document.querySelector('#ac').addEventListener('click', eraseClicked);
+  document.querySelector('#sign').addEventListener('click', signClicked);
 };
