@@ -1,4 +1,7 @@
 {
+  "env": {
+    "browser": true
+  },
   "extends": ["airbnb-base", "prettier"],
   "rules": {
     "func-names": "off",
@@ -6,6 +9,8 @@
     "no-console": "off",
     "object-shorthand": "off",
     "no-confusing-arrow": "off",
-    "eqeqeq": "warn"
+    "eqeqeq": "warn",
+    "radix": "off",
+    "prefer-const": "warn"
   }
 }
