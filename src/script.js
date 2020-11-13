@@ -1,3 +1,5 @@
+const DISPLAY_SIZE = 10;
+
 const math = {
   add: (x, y) => x + y,
   substract: (x, y) => x - y,
@@ -17,4 +19,49 @@ function operate(leftOperand, operator, rightOperand = leftOperand) {
     result = math.multiply(leftOperand, rightOperand);
 
   return result;
+}
+
+function concatDots(string) {
+  const slicePosition = string.length - DISPLAY_SIZE;
+  return '...'.concat(string.substr(slicePosition));
+}
+
+function getFormatedString(string) {
+  if (string.includes('.') && string.includes('e')) {
+    return parseFloat(string)
+      .toPrecision(DISPLAY_SIZE - 4)
+      .toString();
+  }
+
+  if (string.includes('.')) {
+    const lengthIntPart = parseInt(string).toString().length;
+    return parseFloat(string)
+      .toFixed(DISPLAY_SIZE - lengthIntPart - 1)
+      .toString();
+  }
+
+  return parseFloat(string)
+    .toExponential(DISPLAY_SIZE - 4)
+    .toString();
+}
+
+function populateDisplay(string, flag = 'result') {
+  const display = document.querySelector('#display');
+  let displayValue = string;
+
+  if (displayValue === 'Infinity' || displayValue === '-Infinity') {
+    display.innerText = 'NaN';
+    return;
+  }
+
+  // If number is too big, needs formatting
+  if (displayValue.length > DISPLAY_SIZE) {
+    // Display number inputed by user
+    if (flag === 'input') displayValue = concatDots(displayValue);
+
+    // Display result from operation
+    if (flag === 'result') displayValue = getFormatedString(displayValue);
+  }
+
+  display.innerText = displayValue;
 }
