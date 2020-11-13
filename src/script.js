@@ -110,11 +110,27 @@ function numberClicked(event) {
   equalWasClicked = false;
 
   const result =
-    tokens[operand].charAt(0) === '0'
+    tokens[operand].charAt(0) === '0' && !tokens[operand].includes('.')
       ? tokens[operand].slice(1)
       : tokens[operand];
 
   tokens[operand] = result + event.currentTarget.innerText;
+  populateDisplay(tokens[operand], 'input');
+}
+
+function decimalClicked() {
+  const operand = getOperand();
+
+  // Erases result if introducing new number after equal was clicked
+  if (equalWasClicked && operand === 'leftOperand') erase();
+  equalWasClicked = false;
+
+  if (tokens[operand].includes('.')) return;
+
+  // If operand is empty, populate with 0 before dot
+  if (!tokens[operand]) tokens[operand] = '0';
+
+  tokens[operand] = tokens[operand].concat('.');
   populateDisplay(tokens[operand], 'input');
 }
 
@@ -191,4 +207,5 @@ window.onload = function main() {
   document.querySelector('#equal').addEventListener('click', equalClicked);
   document.querySelector('#ac').addEventListener('click', eraseClicked);
   document.querySelector('#sign').addEventListener('click', signClicked);
+  document.querySelector('#decimal').addEventListener('click', decimalClicked);
 };
