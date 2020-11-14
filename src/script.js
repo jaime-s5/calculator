@@ -97,12 +97,12 @@ function erase() {
   tokens.rightOperand = '';
 }
 
-function eraseClicked() {
+function reset() {
   erase();
   populateDisplay('0');
 }
 
-function numberClicked(event) {
+function insertNumber(event) {
   const operand = getOperand();
 
   // Erases result if introducing new number after equal was clicked
@@ -118,7 +118,7 @@ function numberClicked(event) {
   populateDisplay(tokens[operand], 'input');
 }
 
-function decimalClicked() {
+function insertDecimal() {
   const operand = getOperand();
 
   // Erases result if introducing new number after equal was clicked
@@ -134,7 +134,7 @@ function decimalClicked() {
   populateDisplay(tokens[operand], 'input');
 }
 
-function delClicked() {
+function deleteDigit() {
   const operand = getOperand();
 
   // Erases result if introducing new number after equal was clicked
@@ -159,7 +159,7 @@ function changeSign(operand) {
     : '-'.concat(tokens[operand]);
 }
 
-function signClicked() {
+function insertNegative() {
   const operandStore = getOperand();
 
   const operandCopy =
@@ -177,7 +177,7 @@ function signClicked() {
   populateDisplay(tokens[operandStore], flag);
 }
 
-function mathOperatorClicked(event) {
+function insertMathOperator(event) {
   if (getPopulationTokens() === 3) {
     const result = operate(
       parseFloat(tokens.leftOperand),
@@ -193,7 +193,7 @@ function mathOperatorClicked(event) {
   }
 }
 
-function equalClicked() {
+function evaluate() {
   // If rightOperand is empty, we duplicate the number
   if (getPopulationTokens() === 2) tokens.rightOperand = tokens.leftOperand;
 
@@ -217,15 +217,15 @@ window.onload = function main() {
   // Event listeners
   document
     .querySelectorAll('.number')
-    .forEach((element) => element.addEventListener('click', numberClicked));
+    .forEach((element) => element.addEventListener('click', insertNumber));
   document
     .querySelectorAll('.math-operator')
     .forEach((element) =>
-      element.addEventListener('click', mathOperatorClicked)
+      element.addEventListener('click', insertMathOperator)
     );
-  document.querySelector('#equal').addEventListener('click', equalClicked);
-  document.querySelector('#ac').addEventListener('click', eraseClicked);
-  document.querySelector('#sign').addEventListener('click', signClicked);
-  document.querySelector('#decimal').addEventListener('click', decimalClicked);
-  document.querySelector('#del').addEventListener('click', delClicked);
+  document.querySelector('#equal').addEventListener('click', evaluate);
+  document.querySelector('#ac').addEventListener('click', reset);
+  document.querySelector('#sign').addEventListener('click', insertNegative);
+  document.querySelector('#decimal').addEventListener('click', insertDecimal);
+  document.querySelector('#del').addEventListener('click', deleteDigit);
 };
