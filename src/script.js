@@ -44,15 +44,21 @@ function concatDots(string) {
   return '...'.concat(string.substr(slicePosition));
 }
 
+function getExponential(string) {
+  return parseFloat(string)
+    .toPrecision(DISPLAY_SIZE - 4)
+    .toString();
+}
+
 function getFormatedString(string) {
-  if (string.includes('.') && string.includes('e')) {
-    return parseFloat(string)
-      .toPrecision(DISPLAY_SIZE - 4)
-      .toString();
-  }
+  if (string.includes('.') && string.includes('e'))
+    return getExponential(string);
 
   if (string.includes('.')) {
     const lengthIntPart = parseInt(string).toString().length;
+
+    if (lengthIntPart >= DISPLAY_SIZE - 1) return getExponential(string);
+
     return parseFloat(string)
       .toFixed(DISPLAY_SIZE - lengthIntPart - 1)
       .toString();
