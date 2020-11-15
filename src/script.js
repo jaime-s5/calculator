@@ -8,6 +8,13 @@ const tokens = {
 
 const DISPLAY_SIZE = 10;
 
+const operators = {
+  '+': 'add',
+  '-': 'substract',
+  '/': 'divide',
+  '*': 'multiply',
+};
+
 // This variable allows to track if equal was clicked before introducing a number
 let equalWasClicked = false;
 
@@ -21,12 +28,12 @@ const math = {
 function operate(leftOperand, operator, rightOperand = leftOperand) {
   let result = null;
 
-  if (operator === 'add') result = math.add(leftOperand, rightOperand);
-  else if (operator === 'substract')
+  if (operator === operators['+']) result = math.add(leftOperand, rightOperand);
+  else if (operator === operators['-'])
     result = math.substract(leftOperand, rightOperand);
-  else if (operator === 'divide')
+  else if (operator === operators['/'])
     result = math.divide(leftOperand, rightOperand);
-  else if (operator === 'multiply')
+  else if (operator === operators['*'])
     result = math.multiply(leftOperand, rightOperand);
 
   return result;
@@ -102,7 +109,7 @@ function reset() {
   populateDisplay('0');
 }
 
-function insertNumber(event) {
+function insertNumber(number) {
   const operand = getOperand();
 
   // Erases result if introducing new number after equal was clicked
@@ -114,7 +121,7 @@ function insertNumber(event) {
       ? tokens[operand].slice(1)
       : tokens[operand];
 
-  tokens[operand] = result + event.currentTarget.innerText;
+  tokens[operand] = result + number;
   populateDisplay(tokens[operand], 'input');
 }
 
@@ -177,7 +184,7 @@ function insertNegative() {
   populateDisplay(tokens[operandStore], flag);
 }
 
-function insertMathOperator(event) {
+function insertMathOperator(mathOperator) {
   if (getPopulationTokens() === 3) {
     const result = operate(
       parseFloat(tokens.leftOperand),
@@ -186,10 +193,10 @@ function insertMathOperator(event) {
     ).toString();
     erase();
     tokens.leftOperand = result;
-    tokens.operator = event.currentTarget.getAttribute('id');
+    tokens.operator = mathOperator;
     populateDisplay(result);
   } else if (getPopulationTokens() === 2 || getPopulationTokens() === 1) {
-    tokens.operator = event.currentTarget.getAttribute('id');
+    tokens.operator = mathOperator;
   }
 }
 
@@ -210,6 +217,17 @@ function evaluate() {
   }
 }
 
+function keyPressed(event) {
+  if (event.key.match(/\d/)) insertNumber(event.key);
+  else if (event.key === 'Backspace') deleteDigit();
+  else if (event.key === 'Enter') {
+    event.preventDefault(); // Prevents pressing of a focused button
+    evaluate();
+  } else if (event.key === '.') insertDecimal();
+  else if (event.key.match(/[+\-*/]/)) insertMathOperator(operators[event.key]);
+  else if (event.key === 'Escape') reset();
+}
+
 window.onload = function main() {
   // Default value on display
   populateDisplay('0');
@@ -217,15 +235,22 @@ window.onload = function main() {
   // Event listeners
   document
     .querySelectorAll('.number')
-    .forEach((element) => element.addEventListener('click', insertNumber));
+    .forEach((element) =>
+      element.addEventListener('click', (event) =>
+        insertNumber(event.currentTarget.innerText)
+      )
+    );
   document
     .querySelectorAll('.math-operator')
     .forEach((element) =>
-      element.addEventListener('click', insertMathOperator)
+      element.addEventListener('click', (event) =>
+        insertMathOperator(event.currentTarget.getAttribute('id'))
+      )
     );
   document.querySelector('#equal').addEventListener('click', evaluate);
   document.querySelector('#ac').addEventListener('click', reset);
   document.querySelector('#sign').addEventListener('click', insertNegative);
   document.querySelector('#decimal').addEventListener('click', insertDecimal);
   document.querySelector('#del').addEventListener('click', deleteDigit);
+  window.addEventListener('keydown', keyPressed);
 };
