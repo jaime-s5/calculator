@@ -173,7 +173,8 @@ function insertNegative() {
   const operandCopy =
     getPopulationTokens() === 3 ? 'rightOperand' : 'leftOperand';
 
-  if (tokens[operandCopy] === '0') return;
+  if (tokens[operandCopy] === '0' || tokens[operandCopy].match('Infinity'))
+    return;
 
   tokens[operandStore] = changeSign(operandCopy);
 
@@ -235,7 +236,8 @@ function getPercent() {
   const operandCopy =
     getPopulationTokens() === 3 ? 'rightOperand' : 'leftOperand';
 
-  if (tokens[operandCopy] === '0') return;
+  if (tokens[operandCopy] === '0' || tokens[operandCopy].match('Infinity'))
+    return;
 
   tokens[operandStore] = operate(
     parseFloat(tokens[operandCopy]),
