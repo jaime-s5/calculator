@@ -220,7 +220,7 @@ function evaluate() {
 }
 
 function keyPressed(event) {
-  if (event.key.match(/\d/)) insertNumber(event.key);
+  if (event.key.match(/^\d$/)) insertNumber(event.key);
   else if (event.key === 'Backspace') deleteDigit();
   else if (event.key === 'Enter') {
     event.preventDefault(); // Prevents pressing of a focused button
