@@ -234,6 +234,23 @@ function keyPressed(event) {
   else if (event.key === 'Escape') reset();
 }
 
+function getPercent() {
+  const operandStore = getOperand();
+
+  const operandCopy =
+    getPopulationTokens() === 3 ? 'rightOperand' : 'leftOperand';
+
+  if (tokens[operandCopy] === '0') return;
+
+  tokens[operandStore] = operate(
+    parseFloat(tokens[operandCopy]),
+    operators['/'],
+    100
+  ).toString();
+
+  populateDisplay(tokens[operandStore]);
+}
+
 window.onload = function main() {
   // Default value on display
   populateDisplay('0');
@@ -258,5 +275,6 @@ window.onload = function main() {
   document.querySelector('#sign').addEventListener('click', insertNegative);
   document.querySelector('#decimal').addEventListener('click', insertDecimal);
   document.querySelector('#del').addEventListener('click', deleteDigit);
+  document.querySelector('#percentage').addEventListener('click', getPercent);
   window.addEventListener('keydown', keyPressed);
 };
