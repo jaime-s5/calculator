@@ -46,15 +46,12 @@ function concatDots(string) {
 
 function getExponential(string) {
   return parseFloat(string)
-    .toPrecision(DISPLAY_SIZE - 4)
+    .toExponential(DISPLAY_SIZE - 5)
     .toString();
 }
 
 function getFormatedString(string) {
-  if (string.includes('.') && string.includes('e'))
-    return getExponential(string);
-
-  if (string.includes('.')) {
+  if (string.includes('.') && !string.includes('e')) {
     const lengthIntPart = parseInt(string).toString().length;
 
     if (lengthIntPart >= DISPLAY_SIZE - 1) return getExponential(string);
@@ -64,9 +61,7 @@ function getFormatedString(string) {
       .toString();
   }
 
-  return parseFloat(string)
-    .toExponential(DISPLAY_SIZE - 4)
-    .toString();
+  return getExponential(string);
 }
 
 function populateDisplay(string, flag = 'result') {
