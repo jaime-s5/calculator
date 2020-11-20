@@ -31,10 +31,11 @@ body {
   font-family: arial, sans-serif;
   font-size: 24px;
   border: 0;
+  color: black;
 }
 
 .button:hover {
-  filter: brightness(95%);
+  opacity: 0.9;
 }
 
 #display {

@@ -20,6 +20,14 @@ button::-moz-focus-inner,
 }
 
 /**
+  * In firefox, when active, padding is added
+  */
+
+button:active {
+  padding: 0px;
+}
+
+/**
   * Restore the focus styles unset by the previous rule.
   */
 
