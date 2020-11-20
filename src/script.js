@@ -6,7 +6,7 @@ const tokens = {
   rightOperand: '',
 };
 
-const DISPLAY_SIZE = 10;
+const DISPLAY_SIZE = 9;
 
 const operators = {
   '+': 'add',
